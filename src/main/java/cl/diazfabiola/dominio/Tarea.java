@@ -1,5 +1,8 @@
 package cl.diazfabiola.dominio;
 
+/**
+ * Clase Tarea con sus respectivos atributos. En este caso el ID se genera de forma automática cada vez que se crea una nueava tarea
+ */
 public class Tarea {
     private static int ultimoID = 1;
     private int idTarea;
@@ -18,7 +21,6 @@ public class Tarea {
 
     public Tarea() {
     }
-
 
     public int getIdTarea() {
         return idTarea;

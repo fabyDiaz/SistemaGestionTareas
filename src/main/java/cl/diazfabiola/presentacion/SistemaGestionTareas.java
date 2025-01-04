@@ -5,14 +5,23 @@ import cl.diazfabiola.dominio.Prioridad;
 import cl.diazfabiola.dominio.Tarea;
 import cl.diazfabiola.servicio.GestorDeTareas;
 
+import java.util.List;
 import java.util.Scanner;
-
+/**
+ * Esta clase contiene los menús en donde el usuario interactúa con la aplicación
+ * @author Fabiola Díaz <a href="https://github.com/fabyDiaz/SistemaGestionTareas">Github Fabiola Díaz</a>
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 public class SistemaGestionTareas {
 
     public Scanner scanner = new Scanner(System.in);
     int opcion=0;
     GestorDeTareas gestorDeTareas= new GestorDeTareas();
 
+    /**
+     * Este método princiapl de la aplicación que se ejecuata desde el main
+     */
     public void mostrarPrograma(){
         System.out.println("-------------------------------------------");
         System.out.println("BIENVENIDO AL SISTEMA DE GESTIÓN DE TAREAS");
@@ -20,16 +29,21 @@ public class SistemaGestionTareas {
         do{
             try{
                 mostrarMenu();
-                System.out.println("-------------------------------------------\n");
+                //System.out.println("-------------------------------------------\n");
             }catch (NumberFormatException e){
                 System.out.println("Ocurrió un error. Debe ingresar un número");
             }catch (Exception e){
                 System.out.println("Ocurrió un erro. "+e.getMessage());;
             }
-
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
         }while(opcion != 6);
     }
 
+
+    /**
+     * Este método muestra el menú prinicpal de la aplicación
+     */
     public void mostrarMenu(){
         System.out.println("Ingrese una opción");
         System.out.println("1.- Agregar Tarea");
@@ -91,6 +105,10 @@ public class SistemaGestionTareas {
 
     }
 
+    /**
+     *Este método solicita los datos necesarios para crear una nueva tarea
+     * @return Nueva Tarea
+     */
     public Tarea nuevaTarea() {
         System.out.println("TÍTULO:");
         String titulo = scanner.nextLine();
@@ -123,7 +141,10 @@ public class SistemaGestionTareas {
         return gestorDeTareas.agregarTarea(tarea);
     }
 
-
+    /**
+     * Este método muestra todos los datos (atributos) asociado a una tarea
+     * @param tarea
+     */
     public void mostrarTarea(Tarea tarea){
         System.out.println("ID: "+tarea.getIdTarea() +
                 "\nTITULO: "+ tarea.getTitulo()+
@@ -135,6 +156,10 @@ public class SistemaGestionTareas {
         );
     }
 
+    /**
+     * Este método muestra la interfaz para la opción 4 "Listar tareas".
+     * Se puede seleccionar la forma en que quiero que liste las tareas (por ID, Filtrar por Estado o Ordenar por Prioridad)
+     */
     public void ordenarTareas(){
         int opcion;
         Estado estado=null;
@@ -153,13 +178,17 @@ public class SistemaGestionTareas {
                 for (Estado e : Estado.values()) {
                     System.out.println(e.ordinal() + 1 + ". " + e);
                 }
-                int estadoSeleccionado = Integer.parseInt(scanner.nextLine()); // Leer el número de prioridad
-                estado =  validarEstado(estadoSeleccionado);
-                for(Tarea tareaPorPrioridad: gestorDeTareas.filtrarTarea(estado)){
-                    if(tareaPorPrioridad==null)
-                        System.out.println("No hay tareas en estaso: "+estado);
-                    else
+                int estadoSeleccionado = Integer.parseInt(scanner.nextLine());
+                estado = validarEstado(estadoSeleccionado);
+
+                List<Tarea> tareasFiltradas = gestorDeTareas.filtrarTarea(estado);
+
+                if (gestorDeTareas.filtrarTarea(estado).isEmpty()) {
+                    System.out.println("No hay tareas en estado: " + estado);
+                } else {
+                    for (Tarea tareaPorPrioridad : tareasFiltradas) {
                         mostrarTarea(tareaPorPrioridad);
+                    }
                 }
             }
             case 3 ->{
@@ -171,6 +200,13 @@ public class SistemaGestionTareas {
         }
     }
 
+    /**
+     * Este método muestra la interfaz relacionado con la opción 2 "Editar Tarea".
+     * Muestra un submenú que permite selccionar qué atributo de la Tarea deseo editar.
+     * Se puede seleccionar todo los atribbutos que quiera de una tarea específica hastq que decida terminar la edición
+     * presionando la opción 5.
+     * @param idTarea
+     */
     public void editarTarea(int idTarea){
         System.out.println("¿Que quiere editar?");
         int opcion;
@@ -220,6 +256,12 @@ public class SistemaGestionTareas {
 
     }
 
+    /**
+     * Este método se utiliza para valida que se seleccione un Prioridad válida cuando se crea o edita una Tarea al
+     * seleccionar la opción 1 o 2 del menú.
+     * @param prioridadSeleccionada
+     * @return Prioridad
+     */
     private Prioridad validarPrioridad(int prioridadSeleccionada){
         Prioridad prioridad = null;
         if (prioridadSeleccionada >= 1 && prioridadSeleccionada <= Prioridad.values().length) {
@@ -231,6 +273,12 @@ public class SistemaGestionTareas {
         return prioridad;
     }
 
+    /**
+     * Este método se utiliza para valida que se seleccione un Estado válido cuando se crea o edita una Tarea al
+     * seleccionar la opción 1 o 2 del menú
+     * @param estadoSeleccionado
+     * @return Estado
+     */
     private Estado validarEstado(int estadoSeleccionado){
         Estado estado = null;
         if (estadoSeleccionado >= 1 && estadoSeleccionado <= Estado.values().length) {

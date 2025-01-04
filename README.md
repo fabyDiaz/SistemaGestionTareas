@@ -26,8 +26,8 @@ Este proyecto implementa un sistema básico de gestión de tareas en **Java** qu
 
 ### 4. Diseño Orientado a Objetos
 - Principios **SOLID**:
-    - Clase `Task`: Representa las tareas individuales.
-    - Clase `TaskManager`: Gestiona las tareas (agregar, editar, eliminar, buscar, listar).
+    - Clase `Tarea`: Representa las tareas individuales.
+    - Clase `gestorDeTareas`: Gestiona las tareas (agregar, editar, eliminar, buscar, listar).
     - Implementación flexible para que la estructura de datos pueda cambiar sin afectar la funcionalidad principal.
     - Posibilidad de añadir nuevas características sin romper el sistema.
 
@@ -44,7 +44,7 @@ Este proyecto implementa un sistema básico de gestión de tareas en **Java** qu
 ### Instalación y Ejecución
 1. Clona este repositorio o descarga el código fuente.
 2. Abre el proyecto en tu IDE preferido (por ejemplo, IntelliJ IDEA o Eclipse).
-3. Ejecuta el archivo principal `Main.java` para iniciar el sistema.
+3. Ejecuta el archivo principal `App.java` para iniciar el sistema.
 4. Usa el menú en consola para interactuar con el sistema:
    ```text
    a) Agregar tarea
