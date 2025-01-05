@@ -27,7 +27,7 @@ Este proyecto implementa un sistema básico de gestión de tareas en **Java** qu
 ### 4. Diseño Orientado a Objetos
 - Principios **SOLID**:
     - Clase `Tarea`: Representa las tareas individuales.
-    - Clase `gestorDeTareas`: Gestiona las tareas (agregar, editar, eliminar, buscar, listar).
+    - Clase `GestorDeTareas`: Gestiona las tareas (agregar, editar, eliminar, buscar, listar).
     - Implementación flexible para que la estructura de datos pueda cambiar sin afectar la funcionalidad principal.
     - Posibilidad de añadir nuevas características sin romper el sistema.
 
