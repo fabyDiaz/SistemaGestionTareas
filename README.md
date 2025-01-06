@@ -3,6 +3,11 @@
 ## Descripción General
 Este proyecto implementa un sistema básico de gestión de tareas en **Java** que permite a los usuarios crear, organizar y priorizar tareas. Está diseñado utilizando **estructuras de datos**, **programación funcional**, **algoritmos**, y principios de **diseño orientado a objetos (SOLID)**.
 
+📥 **[Descarga la aplicación desde aquí](https://github.com/fabyDiaz/SistemaGestionTareas/releases/tag/v1.0.0)** - Versión más reciente de la aplicación por consola.
+
+📄 **[Ver el informe completo del proyecto](https://github.com/fabyDiaz/SistemaGestionTareas/blob/v1.0.0/Ejercicio%20Final%20de%20M%C3%B3dulo%202.pdf)** - Documentación detallada sobre el diseño e implementación del sistema.
+
+
 ## Características del Sistema
 ### 1. Estructuras de Datos
 - Uso de **listas enlazadas** para almacenar las tareas.
