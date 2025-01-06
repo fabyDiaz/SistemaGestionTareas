@@ -38,7 +38,7 @@ public class GestorDeTareas implements IGestorDeTareas{
         if (tarea == null ||
                 tarea.getTitulo() == null || tarea.getTitulo().trim().isEmpty() ||
                 tarea.getDescripcion() == null || tarea.getDescripcion().trim().isEmpty()) {
-            System.out.println("Error: La tarea tiene datos nulos o vacíos.");
+           // System.out.println("Error: La tarea tiene datos nulos o vacíos.");
             return null; // Retorna null si hay datos inválidos
         }
         // Buscar si ya existe una tarea con el mismo ID
@@ -94,7 +94,6 @@ public class GestorDeTareas implements IGestorDeTareas{
     public Tarea editarTarea(int idTarea, String nuevoTitulo, String nuevaDescripcion, Prioridad nuevaPrioridad, Estado nuevoEstado) {
         Tarea tareaEditar = buscarTarea(idTarea);
 
-        //Cambiar el atributo que no sea nulo
         if (tareaEditar != null) {
             tareaEditar.setTitulo(nuevoTitulo != null ? nuevoTitulo : tareaEditar.getTitulo());
             tareaEditar.setDescripcion(nuevaDescripcion != null ? nuevaDescripcion : tareaEditar.getDescripcion());
@@ -103,7 +102,6 @@ public class GestorDeTareas implements IGestorDeTareas{
 
             return tareaEditar;
         }
-        //Si no encuentra la tarea retorna null
         return null;
     }
 

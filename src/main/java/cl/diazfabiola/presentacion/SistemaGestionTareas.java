@@ -129,19 +129,13 @@ public class SistemaGestionTareas {
     public Tarea nuevaTarea() {
         System.out.println("TÍTULO:");
         String titulo = scanner.nextLine();
-        if (titulo == null || titulo.trim().isEmpty()) {
-            System.out.println("El titulo de la tarea no puede ser nulo o vacío.");
-            System.out.println("\nPresione cualquier tecla para continuar...");
-            scanner.nextLine();
-        }
+        if (titulo == null || titulo.trim().isEmpty())
+            return null;
 
         System.out.println("\nDESCRIPCIÓN:");
         String descripcion = scanner.nextLine();
-        if (descripcion == null || descripcion.trim().isEmpty()) {
-            System.out.println("La descripción de la tarea no puede ser nulo o vacío.");
-            System.out.println("\nPresione cualquier tecla para continuar...");
-            scanner.nextLine();
-        }
+        if (descripcion == null || descripcion.trim().isEmpty())
+            return null;
 
         System.out.println("\nPRIORIDAD:");
         Prioridad prioridad =  validarPrioridad();
@@ -232,17 +226,27 @@ public class SistemaGestionTareas {
             System.out.println("1.- Título");
             System.out.println("2.- Descripción");
             System.out.println("3.- Prioridad");
-            System.out.println("4. Estado");
-            System.out.println("5. Terminar Edición");
+            System.out.println("4.- Estado");
+            System.out.println("5.- Terminar Edición");
             opcion = Integer.parseInt(scanner.nextLine());
             switch (opcion){
                 case 1-> {
                     System.out.println("Ingresa nuevo título:");
                     titulo = scanner.nextLine();
+                    if (titulo == null || titulo.trim().isEmpty()) {
+                        System.out.println("El titulo de la tarea no puede ser nulo o vacío.");
+                        System.out.println("\nPresione cualquier tecla para continuar...");
+                        scanner.nextLine();
+                    }
                 }
                 case 2-> {
                     System.out.println("ingresa nueva descipción");
                     descripcion = scanner.nextLine();
+                    if (descripcion == null || descripcion.trim().isEmpty()) {
+                        System.out.println("La descripción de la tarea no puede ser nulo o vacío.");
+                        System.out.println("\nPresione cualquier tecla para continuar...");
+                        scanner.nextLine();
+                    }
                 }
                 case 3 ->{
                     System.out.println("Ingresa nueva prioridad");
@@ -253,8 +257,16 @@ public class SistemaGestionTareas {
                     System.out.println("Ingresa nuevo estado");
                     estado =  validarEstado();
                 }
-                case 5 -> System.out.println("Edición terminada.");
-                default -> System.out.println("Opción  no válida.");
+                case 5 -> {
+                    System.out.println("Edición terminada.");
+                    System.out.println("\nPresione cualquier tecla para continuar...");
+                    scanner.nextLine();
+                }
+                default -> {
+                    System.out.println("Opción  no válida.");
+                    System.out.println("\nPresione cualquier tecla para continuar...");
+                    scanner.nextLine();
+                }
             }
 
         }while(opcion!=5);
