@@ -95,8 +95,8 @@ public class GestorDeTareas implements IGestorDeTareas{
         Tarea tareaEditar = buscarTarea(idTarea);
 
         if (tareaEditar != null) {
-            tareaEditar.setTitulo(nuevoTitulo != null ? nuevoTitulo : tareaEditar.getTitulo());
-            tareaEditar.setDescripcion(nuevaDescripcion != null ? nuevaDescripcion : tareaEditar.getDescripcion());
+            tareaEditar.setTitulo(nuevoTitulo != null && !nuevoTitulo.trim().isEmpty()? nuevoTitulo : tareaEditar.getTitulo());
+            tareaEditar.setDescripcion(nuevaDescripcion != null && !nuevaDescripcion.trim().isEmpty()? nuevaDescripcion : tareaEditar.getDescripcion());
             tareaEditar.setPrioridad(nuevaPrioridad != null ? nuevaPrioridad : tareaEditar.getPrioridad());
             tareaEditar.setEstado(nuevoEstado != null ? nuevoEstado : tareaEditar.getEstado());
 

@@ -67,28 +67,40 @@ public class SistemaGestionTareas {
                 scanner.nextLine();  // Esperar que el usuario presione Enter o cualquier tecla
             }
             case 2->{
-                System.out.println("Ingrese ID de la Tarea que quiere editar: ");
-                int id = Integer.parseInt(scanner.nextLine());
-                Tarea tareaEditar = gestorDeTareas.buscarTarea(id);
-                if(tareaEditar==null){
-                    System.out.println("La tarea con ID "+id+ " no existe");
-                }else{
-                    mostrarTarea(tareaEditar);
-                    editarTarea(tareaEditar.getIdTarea());
+                try{
+                    System.out.println("Ingrese ID de la Tarea que quiere editar: ");
+                    int id = Integer.parseInt(scanner.nextLine());
+                    Tarea tareaEditar = gestorDeTareas.buscarTarea(id);
+                    if(tareaEditar==null){
+                        System.out.println("La tarea con ID "+id+ " no existe");
+                    }else{
+                        mostrarTarea(tareaEditar);
+                        editarTarea(tareaEditar.getIdTarea());
+                    }
+                }catch (NumberFormatException e){
+                    System.out.println("Ocurrió un error. Debe ingresar un número");
+                }catch (Exception e) {
+                    System.out.println("Ocurrió un erro. " + e.getMessage());
                 }
-                System.out.println("\nPresione cualquier tecla para continuar...");
-                scanner.nextLine();  // Esperar que el usuario presione Enter o cualquier tecla
+
             }
             case 3 ->{
-                System.out.println("Ingrese ID de la Tarea: ");
-                int id = Integer.parseInt(scanner.nextLine());
-                if(gestorDeTareas.eliminarTarea(id)==null){
-                    System.out.println("La tarea con ID "+id+ " no existe");
-                }else{
-                    System.out.println("La tarea con ID "+id+ " eliminada");
+                try{
+                    System.out.println("Ingrese ID de la Tarea:");
+                    int id = Integer.parseInt(scanner.nextLine());
+                    if(gestorDeTareas.eliminarTarea(id)==null){
+                        System.out.println("La tarea con ID "+id+ " no existe");
+                    }else{
+                        System.out.println("La tarea con ID "+id+ " eliminada");
+                    }
+                }catch (NumberFormatException e){
+                    System.out.println("Ocurrió un error. Debe ingresar un número");
+                }catch (Exception e) {
+                    System.out.println("Ocurrió un erro. " + e.getMessage());
+                }finally {
+                    System.out.println("\nPresione cualquier tecla para continuar...");
+                    scanner.nextLine();
                 }
-                System.out.println("\nPresione cualquier tecla para continuar...");
-                scanner.nextLine();  // Esperar que el usuario presione Enter o cualquier tecla
 
             }
             case 4 ->{
@@ -97,9 +109,6 @@ public class SistemaGestionTareas {
                 }else{
                    ordenarTareas();
                 }
-                // Mensaje para continuar
-                System.out.println("\nPresione cualquier tecla para continuar...");
-                scanner.nextLine();  // Esperar que el usuario presione Enter o cualquier tecla
             }
             case 5 ->{
                 System.out.println("Ingrese título o descripción de la tarea: ");
@@ -171,41 +180,47 @@ public class SistemaGestionTareas {
     public void ordenarTareas(){
         int opcion;
         Estado estado=null;
-        System.out.println("1.- Mostrar Tareas por ID");
-        System.out.println("2.- Filtrar por Estado");
-        System.out.println("3.- Ordenar por Prioridad");
-        opcion = Integer.parseInt(scanner.nextLine());
-        switch (opcion){
-            case 1-> {
-                for(Tarea tareaPorID: gestorDeTareas.listarTareas()){
-                    mostrarTarea(tareaPorID);
+
+        try {
+            System.out.println("1.- Mostrar Tareas por ID");
+            System.out.println("2.- Filtrar por Estado");
+            System.out.println("3.- Ordenar por Prioridad");
+            opcion = Integer.parseInt(scanner.nextLine());
+            switch (opcion){
+                case 1-> {
+                    for(Tarea tareaPorID: gestorDeTareas.listarTareas()){
+                        mostrarTarea(tareaPorID);
+                    }
                 }
-            }
-            case 2-> {
-                System.out.println("Ingresa el estado");
-                estado = validarEstado();
+                case 2-> {
+                    System.out.println("Ingresa el estado");
+                    estado = validarEstado();
 
-                List<Tarea> tareasFiltradas = gestorDeTareas.filtrarTarea(estado);
+                    List<Tarea> tareasFiltradas = gestorDeTareas.filtrarTarea(estado);
 
-                if (gestorDeTareas.filtrarTarea(estado).isEmpty()) {
-                    System.out.println("No hay tareas en estado: " + estado);
-                } else {
-                    for (Tarea tareaPorPrioridad : tareasFiltradas) {
+                    if (gestorDeTareas.filtrarTarea(estado).isEmpty()) {
+                        System.out.println("No hay tareas en estado: " + estado);
+                    } else {
+                        for (Tarea tareaPorPrioridad : tareasFiltradas) {
+                            mostrarTarea(tareaPorPrioridad);
+                        }
+                    }
+
+                }
+                case 3 ->{
+                    for(Tarea tareaPorPrioridad: gestorDeTareas.ordenarTarea()){
                         mostrarTarea(tareaPorPrioridad);
                     }
                 }
+                default ->  System.out.println("Opción  no válida.");
             }
-            case 3 ->{
-                for(Tarea tareaPorPrioridad: gestorDeTareas.ordenarTarea()){
-                    mostrarTarea(tareaPorPrioridad);
-                }
-            }
-            default -> {
-
-                System.out.println("Opción  no válida.");
-                System.out.println("\nPresione cualquier tecla para continuar...");
-                scanner.nextLine();
-            }
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Debes ingresar un número válido.");
+        } catch (Exception e) {
+            System.out.println("Ocurrió un error inesperado: " + e.getMessage());
+        } finally {
+            System.out.println("\nPresione cualquier tecla para continuar...");
+            scanner.nextLine();
         }
     }
 
@@ -218,56 +233,54 @@ public class SistemaGestionTareas {
      */
     public void editarTarea(int idTarea){
         System.out.println("¿Que quiere editar?");
-        int opcion;
+        int opcion=0;
         String titulo= null, descripcion= null;
         Prioridad prioridad= null;
         Estado estado=null;
         do{
-            System.out.println("1.- Título");
-            System.out.println("2.- Descripción");
-            System.out.println("3.- Prioridad");
-            System.out.println("4.- Estado");
-            System.out.println("5.- Terminar Edición");
-            opcion = Integer.parseInt(scanner.nextLine());
-            switch (opcion){
-                case 1-> {
-                    System.out.println("Ingresa nuevo título:");
-                    titulo = scanner.nextLine();
-                    if (titulo == null || titulo.trim().isEmpty()) {
-                        System.out.println("El titulo de la tarea no puede ser nulo o vacío.");
-                        System.out.println("\nPresione cualquier tecla para continuar...");
-                        scanner.nextLine();
+            try{
+                System.out.println("1.- Título");
+                System.out.println("2.- Descripción");
+                System.out.println("3.- Prioridad");
+                System.out.println("4.- Estado");
+                System.out.println("5.- Terminar Edición");
+                opcion = Integer.parseInt(scanner.nextLine());
+                switch (opcion){
+                    case 1-> {
+                        System.out.println("Ingresa nuevo título:");
+                        titulo = scanner.nextLine();
+                        if (titulo == null || titulo.trim().isEmpty()) {
+                            System.out.println("El titulo de la tarea no puede ser nulo o vacío.");
+                        }
                     }
-                }
-                case 2-> {
-                    System.out.println("ingresa nueva descipción");
-                    descripcion = scanner.nextLine();
-                    if (descripcion == null || descripcion.trim().isEmpty()) {
-                        System.out.println("La descripción de la tarea no puede ser nulo o vacío.");
-                        System.out.println("\nPresione cualquier tecla para continuar...");
-                        scanner.nextLine();
+                    case 2-> {
+                        System.out.println("ingresa nueva descipción");
+                        descripcion = scanner.nextLine();
+                        if (descripcion == null || descripcion.trim().isEmpty()) {
+                            System.out.println("La descripción de la tarea no puede ser nulo o vacío.");
+                        }
                     }
-                }
-                case 3 ->{
-                    System.out.println("Ingresa nueva prioridad");
-                    prioridad =  validarPrioridad();
+                    case 3 ->{
+                        System.out.println("Ingresa nueva prioridad");
+                        prioridad =  validarPrioridad();
 
+                    }
+                    case 4 -> {
+                        System.out.println("Ingresa nuevo estado");
+                        estado =  validarEstado();
+                    }
+                    case 5 -> System.out.println("Edición terminada.");
+
+                    default -> System.out.println("Opción  no válida.");
                 }
-                case 4 -> {
-                    System.out.println("Ingresa nuevo estado");
-                    estado =  validarEstado();
-                }
-                case 5 -> {
-                    System.out.println("Edición terminada.");
-                    System.out.println("\nPresione cualquier tecla para continuar...");
-                    scanner.nextLine();
-                }
-                default -> {
-                    System.out.println("Opción  no válida.");
-                    System.out.println("\nPresione cualquier tecla para continuar...");
-                    scanner.nextLine();
-                }
-            }
+            }catch (NumberFormatException e) {
+                System.out.println("Error: Debes ingresar un número válido.");
+            } catch (Exception e) {
+                System.out.println("Ocurrió un error inesperado: " + e.getMessage());
+            } finally {
+                System.out.println("\nPresione cualquier tecla para continuar...");
+                scanner.nextLine();
+        }
 
         }while(opcion!=5);
 
@@ -290,6 +303,9 @@ public class SistemaGestionTareas {
 
             if (prioridadSeleccionada >= 1 && prioridadSeleccionada <= Prioridad.values().length) {
                 prioridad = Prioridad.values()[prioridadSeleccionada - 1];
+            }else{
+                System.out.println("Opción de prioridad no válida, seleccionando por defecto: MEDIA");
+                prioridad = Prioridad.MEDIA;
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Opción de prioridad no válida, seleccionando por defecto: MEDIA");
@@ -312,8 +328,10 @@ public class SistemaGestionTareas {
             int estadoSeleccionado = Integer.parseInt(scanner.nextLine());
             if (estadoSeleccionado >= 1 && estadoSeleccionado <= Estado.values().length) {
                 estado = Estado.values()[estadoSeleccionado - 1];
+            }else{
+                System.out.println("Opción de estado no válida, seleccionando por defecto: PENDIENTE");
+                estado = Estado.PENDIENTE;
             }
-
         }catch (IllegalArgumentException e){
             System.out.println("Opción de estado no válida, seleccionando por defecto: PENDIENTE");
             estado = Estado.PENDIENTE;
